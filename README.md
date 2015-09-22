@@ -1,5 +1,7 @@
 # billets-mobile-web-validator
-Application Javascript pour validation de billets délivrés par http://www.billets.tk/
+[Prochainement] Application Javascript pour validation de billets délivrés par http://www.billets.tk/
+
+## Cette application sera déposé dans ce dépot lorsque sont développement initial sera terminé
 
 Cette application est une alternative "auto-hébergé" à la version "en ligne" de la valideuse fournie par Billets.tk. Celle-ci est recommandé lorsque la connexion internet entre le lieu de validation de votre événement risque d'être instable.
 
