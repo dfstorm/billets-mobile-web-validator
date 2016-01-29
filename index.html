@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <meta charset="utf-8" /> 
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+         <link href="bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Html par défault. Visible le temps du chargement sur connexion lente et demeure affiché en cas d'erreur de chargement javascript. -->
+        <div id="body">
+            <center>
+                <p>
+                    <img style='margin-top: 20px;' src='https://billets.tk/images/billets.tk.png' />
+                </p>
+                <br />
+                <p>
+                    Initizialisation...
+                </p>
+                <br />
+                <p class='text-danger'>Si rien ne ce produit, votre appareil ne supporte pas la valideuse.</p>
+                <p><a href="http://support.billets.tk/kb/faq.php?id=4" class="btn btn-default" target="_blank">Support</a></p>
+                <br />
+                <img src='https://billets.tk/images/24-1.gif'>
+            </center>
+        </div>
+        
+        <!-- Div utilitaires invisible et canva pour le traitement de l'information -->
+        <div id="mainbody" style="display:none; overflow: hidden;"><div id="outdiv"></div><div id="result"></div></div>
+        <canvas id="qr-canvas" width="" height="" style="width:100px; height:100px; overflow:hidden;"></canvas>
+        
+        <!-- Alerte affiché sur succès de validation -->
+        <div class="modal fade" id="isOkay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h2 class="text-success">Billets valide</h2>
+                        <div class="form-group">
+                            <label>Nom du forfait</label> <br />
+                            <span id="forfaitName">(Aucune donnée)</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom du client</label> <br />
+                            <span id="guestName">(Aucune donnée)</span>
+                        </div>
+
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message d'erreur sur billets invalide -->
+        <div class="modal fade" id="notGood" tabindex="-1" role="dialog" aria-labelledby="bb">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h2 class="text-danger">Billets Invalide</h2>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+            # Load order if not using terminal.billets.tk.dist.min.js.
+            - jquery-1.11.2.js
+            - bootstrap.min.js
+            - llqrcode.js
+            - webqr.js
+            - comon.js
+        -->
+        <script type="text/javascript" src="terminal.billets.tk.dist.min.js"></script>
+    </body>
+</html>
