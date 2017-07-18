@@ -11,14 +11,16 @@ var webkit=false;
 var moz=false;
 var v=null;
 
-var imghtml='<div id="qrfile"><canvas id="out-canvas" width="320" height="240"></canvas>'+
+var iInterval = 500;
+
+var imghtml='<div id="qrfile"><canvas id="out-canvas"></canvas>'+
     '<div id="imghelp">drag and drop a QRCode here'+
 	'<br>or select a file'+
 	'<input type="file" onchange="handleFiles(this.files)"/>'+
 	'</div>'+
 '</div>';
 
-var vidhtml = '<video id="v" autoplay style="display:none;"></video>';
+var vidhtml = '<video id="v" autoplay style=" background-size: cover; object-fit: cover; width: 100%;"></video>';
 
 function dragenter(e) {
   e.stopPropagation();
@@ -67,10 +69,10 @@ function handleFiles(f)
 function initCanvas(w,h)
 {
     gCanvas = document.getElementById("qr-canvas");
-    gCanvas.style.width = w + "px";
-    gCanvas.style.height = h + "px";
-    gCanvas.width = w;
-    gCanvas.height = h;
+    gCanvas.style.width = "50px";
+    gCanvas.style.height = "50px";
+    gCanvas.width = 1200;
+    gCanvas.height =1200;
     gCtx = gCanvas.getContext("2d");
     gCtx.clearRect(0, 0, w, h);
 }
@@ -88,17 +90,17 @@ function captureToCanvas() {
             }
             catch(e){
                 console.log(e);
-                setTimeout(captureToCanvas, 500);
+                setTimeout(captureToCanvas, iInterval);
             };
         }
         catch(e){
-                alert('error');
-                setTimeout(captureToCanvas, 500);
+                console.log(e);
+                setTimeout(captureToCanvas, iInterval);
         };
     } else {
-        
+
     }
-    
+
 }
 
 function htmlEntities(str) {
@@ -114,17 +116,32 @@ function doCheckDatabase(html)
 {
     $('#forfaitName').html('(Aucune donnée)');
     $('#guestName').html('(Aucune donnée)');
-    
+
 	var bOkay = false;
-	$.each(arrDatabase, function(index, value) { 
+	$.each(arrDatabase, function(index, value) {
       if(index == html) {
         bOkay = true;
-        
+
+        var audio = new Audio('served.ogg');
+        audio.play();
+
         $('#forfaitName').html(value.sName);
         $('#guestName').html(value.sGuestName);
-        
-        
-        $('#isOkay').modal();
+
+        $('#divSuccess').show();
+
+
+	// signal system
+    	$.ajax({
+                type: "POST",
+                url: 'https://billets.io/ajax/api/setTicketPass/'+html,
+                success: function(data) {
+                  console.info('loged');
+                },
+                dataType: 'json'
+            });
+
+
       }
     });
     if(!bOkay) {
@@ -150,7 +167,7 @@ function success(stream) {
     else
         v.src = stream;
     gUM=true;
-    setTimeout(captureToCanvas, 500);
+    setTimeout(captureToCanvas, iInterval);
 }
 
 function error(error) {
@@ -161,7 +178,7 @@ function error(error) {
 
 function load()
 {
-    var winW = 630, winH = 460;
+    var winW = 200, winH = 200;
     if (document.body && document.body.offsetWidth) {
      winW = document.body.offsetWidth;
      winH = document.body.offsetHeight;
@@ -177,13 +194,13 @@ function load()
      winH = window.innerHeight;
     }
     winH = winH - 100;
-    
+
 	if(isCanvasSupported() && window.File && window.FileReader)
 	{
-		initCanvas(winW, winH);
+		initCanvas(1000, 1000);
 		qrcode.callback = read;
 		document.getElementById("mainbody").style.display="inline";
-		
+
         setwebcam();
 	}
 	else
@@ -198,22 +215,22 @@ function load()
 function setwebcam()
 {
 
-	
+
     if(stype==1)
     {
-        setTimeout(captureToCanvas, 500);
+        setTimeout(captureToCanvas, iInterval);
         return;
     }
     var n=navigator;
     document.getElementById("outdiv").innerHTML = vidhtml;
-    
+
     v=document.getElementById("v");
-    
+
     if(n.getUserMedia)  {
 
         n.getUserMedia({video: true, audio: false}, success, error);
    } else if(n.webkitGetUserMedia) {
-  
+
 
         webkit=true;
         n.webkitGetUserMedia({video:true, audio: false}, success, error);
@@ -222,7 +239,7 @@ function setwebcam()
         moz=true;
         n.mozGetUserMedia({video: true, audio: false}, success, error);
     } else {
-    
+
 
     }
 
@@ -232,8 +249,8 @@ function setwebcam()
 
 
     stype=1;
-    setTimeout(captureToCanvas, 500);
-    
+    setTimeout(captureToCanvas, iInterval);
+
 
 }
 function setimg()
